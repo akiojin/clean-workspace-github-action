@@ -2132,6 +2132,7 @@ const IsMacOS = os.platform() === 'darwin';
 function Run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            core.info(`Clean directory: ${core.getInput('workspace')}`);
             io.rmRF(`${core.getInput('workspace')}/*`);
         }
         catch (ex) {
