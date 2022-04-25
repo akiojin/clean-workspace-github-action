@@ -2087,6 +2087,108 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 968:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _ActionStateCache_key;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.NumberStateCache = exports.BooleanStateCache = exports.StringStateCache = exports.ActionStateHelper = void 0;
+const coreCommand = __importStar(__nccwpck_require__(604));
+class ActionStateHelper {
+    static Set(key, value) {
+        coreCommand.issueCommand('save-state', { name: key }, value);
+    }
+    static Get(key) {
+        return process.env[`STATE_${key}`] || '';
+    }
+}
+exports.ActionStateHelper = ActionStateHelper;
+class ActionStateCache {
+    constructor(key) {
+        _ActionStateCache_key.set(this, '');
+        __classPrivateFieldSet(this, _ActionStateCache_key, key, "f");
+    }
+    GetKey() {
+        return __classPrivateFieldGet(this, _ActionStateCache_key, "f");
+    }
+}
+_ActionStateCache_key = new WeakMap();
+class StringStateCache extends ActionStateCache {
+    constructor(key) {
+        super(key);
+    }
+    Set(value) {
+        ActionStateHelper.Set(this.GetKey(), value);
+    }
+    Get() {
+        return ActionStateHelper.Get(this.GetKey());
+    }
+}
+exports.StringStateCache = StringStateCache;
+class BooleanStateCache extends ActionStateCache {
+    constructor(key) {
+        super(key);
+    }
+    Set(value) {
+        ActionStateHelper.Set(this.GetKey(), value.toString());
+    }
+    Get() {
+        return !!ActionStateHelper.Get(this.GetKey());
+    }
+}
+exports.BooleanStateCache = BooleanStateCache;
+class NumberStateCache extends ActionStateCache {
+    constructor(key) {
+        super(key);
+    }
+    Set(value) {
+        ActionStateHelper.Set(this.GetKey(), value.toString());
+    }
+    Get() {
+        return +ActionStateHelper.Get(this.GetKey());
+    }
+}
+exports.NumberStateCache = NumberStateCache;
+
+
+/***/ }),
+
 /***/ 116:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -2128,7 +2230,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(127));
 const io = __importStar(__nccwpck_require__(864));
 const os = __importStar(__nccwpck_require__(37));
+const StateHelper_1 = __nccwpck_require__(968);
 const IsMacOS = os.platform() === 'darwin';
+const PostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
 function Run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -2144,7 +2248,10 @@ if (!IsMacOS) {
     core.setFailed('Action requires macOS agent.');
 }
 else {
-    Run();
+    if (!!PostProcess.Get()) {
+        Run();
+    }
+    PostProcess.Set(true);
 }
 
 
