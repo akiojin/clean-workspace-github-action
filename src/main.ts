@@ -4,24 +4,17 @@ import * as os from 'os'
 import { BooleanStateCache } from './StateHelper'
 
 const IsMacOS = os.platform() === 'darwin'
-const PostProcess = new BooleanStateCache('IS_POST_PROCESS')
+const IsPostProcess = new BooleanStateCache('IS_POST_PROCESS')
 
-async function Run()
-{
-	try {
+try {
+	if (!IsMacOS) {
+		throw new Error('Action requires macOS agent.')
+	} else if (!!IsPostProcess.Get()) {
 		core.info(`Clean directory: ${core.getInput('workspace')}`)
 		io.rmRF(`${core.getInput('workspace')}/*`)
-	} catch (ex: any) {
-		core.setFailed(ex.message)
+	} else {
+		IsPostProcess.Set(true)
 	}
-}
-
-if (!IsMacOS) {
-	core.setFailed('Action requires macOS agent.')
-} else {
-	if (!!PostProcess.Get()) {
-		Run()
-	}
-	
-	PostProcess.Set(true)
+} catch (ex: any) {
+	core.setFailed(ex.message)
 }

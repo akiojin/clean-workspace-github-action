@@ -2,7 +2,7 @@
   "name": "clean-workspace-github-action",
   "version": "0.1.0",
   "private": true,
-  "description": "This action ",
+  "description": "This action cleans up the workspace when the workflow is finished.",
   "main": "dist/index.js",
   "directories": {
     "lib": "lib",
@@ -16,10 +16,7 @@
     "url": "git+https://github.com/akiojin/clean-workspace-github-action.git"
   },
   "keywords": [
-    "actions",
-    "node",
-    "setup",
-    "xcode"
+    "actions"
   ],
   "author": "akiojin",
   "license": "MIT",

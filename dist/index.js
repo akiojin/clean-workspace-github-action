@@ -2217,41 +2217,27 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(127));
 const io = __importStar(__nccwpck_require__(864));
 const os = __importStar(__nccwpck_require__(37));
 const StateHelper_1 = __nccwpck_require__(968);
 const IsMacOS = os.platform() === 'darwin';
-const PostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
-function Run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            core.info(`Clean directory: ${core.getInput('workspace')}`);
-            io.rmRF(`${core.getInput('workspace')}/*`);
-        }
-        catch (ex) {
-            core.setFailed(ex.message);
-        }
-    });
-}
-if (!IsMacOS) {
-    core.setFailed('Action requires macOS agent.');
-}
-else {
-    if (!!PostProcess.Get()) {
-        Run();
+const IsPostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
+try {
+    if (!IsMacOS) {
+        throw new Error('Action requires macOS agent.');
     }
-    PostProcess.Set(true);
+    else if (!!IsPostProcess.Get()) {
+        core.info(`Clean directory: ${core.getInput('workspace')}`);
+        io.rmRF(`${core.getInput('workspace')}/*`);
+    }
+    else {
+        IsPostProcess.Set(true);
+    }
+}
+catch (ex) {
+    core.setFailed(ex.message);
 }
 
 
