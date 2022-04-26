@@ -2220,17 +2220,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(127));
 const io = __importStar(__nccwpck_require__(864));
-const os = __importStar(__nccwpck_require__(37));
+const path = __importStar(__nccwpck_require__(17));
 const StateHelper_1 = __nccwpck_require__(968);
-const IsMacOS = os.platform() === 'darwin';
 const IsPostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
 try {
-    if (!IsMacOS) {
-        throw new Error('Action requires macOS agent.');
-    }
-    else if (!!IsPostProcess.Get()) {
-        core.info(`Clean directory: ${core.getInput('workspace')}`);
-        io.rmRF(`${core.getInput('workspace')}/*`);
+    if (!!IsPostProcess.Get()) {
+        var temp = path.join(core.getInput('workspace'), '*');
+        core.info(`Clean directory: ${temp}`);
+        io.rmRF(temp);
     }
     else {
         IsPostProcess.Set(true);
