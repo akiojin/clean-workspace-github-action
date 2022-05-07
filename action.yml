@@ -1,8 +1,5 @@
 name: 'clean-workspace-github-action'
 description: 'This action cleans the workspace.'
-inputs:
-  workspace:
-    default: ${{ github.workspace }}
 runs:
   using: 'node16'
   main: 'dist/index.js'

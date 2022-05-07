@@ -2220,15 +2220,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(127));
 const io = __importStar(__nccwpck_require__(864));
-const path = __importStar(__nccwpck_require__(17));
 const StateHelper_1 = __nccwpck_require__(968);
 const IsPostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
 try {
     if (!!IsPostProcess.Get()) {
-        core.info(`${process.env.GITHUB_WORKSPACE}`);
-        var temp = path.join(core.getInput('workspace'), '*');
-        core.info(`Clean directory: ${temp}`);
-        io.rmRF(temp);
+        var workspace = process.env.GITHUB_WORKSPACE;
+        if (!workspace) {
+            throw new Error('Environment variable is abnormal.');
+        }
+        core.info(`Clean directory: ${workspace}`);
+        io.rmRF(workspace);
     }
     else {
         IsPostProcess.Set(true);

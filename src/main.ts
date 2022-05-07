@@ -7,10 +7,14 @@ const IsPostProcess = new BooleanStateCache('IS_POST_PROCESS')
 
 try {
 	if (!!IsPostProcess.Get()) {
-		core.info(`${process.env.GITHUB_WORKSPACE}`)
-		var temp = path.join(core.getInput('workspace'), '*')
-		core.info(`Clean directory: ${temp}`)
-		io.rmRF(temp)
+		var workspace = process.env.GITHUB_WORKSPACE
+
+		if (!workspace) {
+			throw new Error('Environment variable is abnormal.')
+		}
+
+		core.info(`Clean directory: ${workspace}`)
+		io.rmRF(workspace)
 	} else {
 		IsPostProcess.Set(true)
 	}
