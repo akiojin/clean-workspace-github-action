@@ -2220,7 +2220,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(127));
 const io = __importStar(__nccwpck_require__(864));
+const path = __importStar(__nccwpck_require__(17));
 const StateHelper_1 = __nccwpck_require__(968);
+const IsWindows = process.platform.toLowerCase() === 'win32';
 const IsPostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
 try {
     if (!!IsPostProcess.Get()) {
@@ -2229,8 +2231,12 @@ try {
             throw new Error('Environment variable is abnormal.');
         }
         core.info(`Clean directory: ${workspace}`);
-        io.rmRF(workspace);
-        io.mkdirP(workspace);
+        if (!IsWindows) {
+            io.rmRF(path.join(workspace, '*'));
+        }
+        else {
+            throw new Error('Not supported platform.');
+        }
     }
     else {
         IsPostProcess.Set(true);

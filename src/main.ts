@@ -1,7 +1,9 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
+import * as path from 'path'
 import { BooleanStateCache } from './StateHelper'
 
+const IsWindows = process.platform.toLowerCase() === 'win32'
 const IsPostProcess = new BooleanStateCache('IS_POST_PROCESS')
 
 try {
@@ -13,8 +15,12 @@ try {
 		}
 
 		core.info(`Clean directory: ${workspace}`)
-		io.rmRF(workspace)
-		io.mkdirP(workspace)
+
+		if (!IsWindows) {
+			io.rmRF(path.join(workspace, '*'))
+		} else {
+			throw new Error('Not supported platform.')
+		}
 	} else {
 		IsPostProcess.Set(true)
 	}
