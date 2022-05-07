@@ -2230,6 +2230,7 @@ try {
         }
         core.info(`Clean directory: ${workspace}`);
         io.rmRF(workspace);
+        io.mkdirP(workspace);
     }
     else {
         IsPostProcess.Set(true);
