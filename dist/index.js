@@ -2225,6 +2225,7 @@ const StateHelper_1 = __nccwpck_require__(968);
 const IsPostProcess = new StateHelper_1.BooleanStateCache('IS_POST_PROCESS');
 try {
     if (!!IsPostProcess.Get()) {
+        core.info(`${process.env.GITHUB_WORKSPACE}`);
         var temp = path.join(core.getInput('workspace'), '*');
         core.info(`Clean directory: ${temp}`);
         io.rmRF(temp);
