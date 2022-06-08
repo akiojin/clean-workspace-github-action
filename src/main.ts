@@ -7,6 +7,10 @@ const IsWindows = process.platform.toLowerCase() === 'win32'
 const IsPostProcess = new BooleanStateCache('IS_POST_PROCESS')
 
 try {
+	if (!!IsWindows) {
+		throw new Error('Not supported platform.')
+	}
+
 	if (!!IsPostProcess.Get()) {
 		var workspace = process.env.GITHUB_WORKSPACE
 
@@ -16,11 +20,7 @@ try {
 
 		core.info(`Clean directory: ${workspace}`)
 
-		if (!IsWindows) {
-			io.rmRF(path.join(workspace, '*'))
-		} else {
-			throw new Error('Not supported platform.')
-		}
+		io.rmRF(path.join(workspace, '*'))
 	} else {
 		IsPostProcess.Set(true)
 	}
