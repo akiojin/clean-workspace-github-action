@@ -1,13 +1,8 @@
 {
   "name": "clean-workspace-github-action",
   "version": "1.0.1",
-  "private": true,
   "description": "This action cleans up the workspace when the workflow is finished.",
   "main": "dist/index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +11,8 @@
     "url": "git+https://github.com/akiojin/clean-workspace-github-action.git"
   },
   "keywords": [
-    "actions"
+    "actions",
+    "dotnet"
   ],
   "author": "akiojin",
   "license": "MIT",
