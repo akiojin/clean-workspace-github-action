@@ -1,10 +1,10 @@
 import * as core from '@actions/core'
 import * as io from '@actions/io'
 import * as path from 'path'
-import { BooleanStateCache } from './StateHelper'
+import { BooleanEnvironment } from './Environment'
 
 const IsWindows = process.platform.toLowerCase() === 'win32'
-const IsPostProcess = new BooleanStateCache('IS_POST_PROCESS')
+const IsPostProcess = new BooleanEnvironment('IS_POST_PROCESS')
 
 try {
 	if (!!IsWindows) {
