@@ -1,16 +1,10 @@
 import * as core from '@actions/core'
-import * as io from '@actions/io'
-import * as path from 'path'
+import rimraf from 'rimraf'
 import { BooleanEnvironment } from './Environment'
 
-const IsWindows = process.platform.toLowerCase() === 'win32'
 const IsPostProcess = new BooleanEnvironment('IS_POST_PROCESS')
 
 try {
-	if (!!IsWindows) {
-		throw new Error('Not supported platform.')
-	}
-
 	if (!!IsPostProcess.Get()) {
 		var workspace = process.env.GITHUB_WORKSPACE
 
@@ -20,7 +14,7 @@ try {
 
 		core.info(`Clean directory: ${workspace}`)
 
-		io.rmRF(path.join(workspace, '*'))
+		rimraf.rimrafSync(workspace)
 	} else {
 		IsPostProcess.Set(true)
 	}

@@ -22,16 +22,16 @@
     "url": "https://github.com/akiojin/clean-workspace-github-action/issues"
   },
   "homepage": "https://github.com/akiojin/clean-workspace-github-action#readme",
+  "dependencies": {
+    "rimraf": "4.4.1"
+  },
   "devDependencies": {
     "@actions/core": "1.10.0",
-    "@actions/io": "1.1.3",
     "@commitlint/cli": "17.5.0",
     "@commitlint/config-conventional": "17.4.4",
     "@types/node": "18.15.5",
     "@vercel/ncc": "0.36.1",
     "husky": "8.0.3",
-    "path": "0.12.7",
-    "rimraf": "4.4.1",
     "typescript": "5.0.2"
   },
   "private": true
