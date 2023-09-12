@@ -1,9 +1,13 @@
 name: 'clean-workspace-github-action'
 description: 'This action cleans the workspace.'
+
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
-  post: 'dist/index.js'
+  using: "composite"
+  steps:
+    - name: Clean up workspace
+      if: always()
+      post: git reset --hard HEAD && git clean -fdx
+
 branding:
   icon: "box"
   color: "orange"
