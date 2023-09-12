@@ -6,6 +6,7 @@ runs:
   steps:
     - name: Clean up workspace
       if: always()
+      shell: bash
       post: git reset --hard HEAD && git clean -fdx
 
 branding:
