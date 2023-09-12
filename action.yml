@@ -3,12 +3,13 @@ description: 'This action cleans the workspace.'
 
 runs:
   using: "composite"
-  steps:
+  post:
     - name: Clean up workspace
       if: always()
       shell: bash
-      run: echo "Finally, clean the workspace."
-      post: git reset --hard HEAD && git clean -fdx
+      run: |
+        echo "Finally, clean the workspace."
+        git reset --hard HEAD && git clean -fdx
 
 branding:
   icon: "box"
