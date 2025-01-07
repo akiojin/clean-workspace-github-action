@@ -1,0 +1,29 @@
+# Copyright (c) 2022 Akio Jinsenji
+
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  Test:
+    runs-on: ${{ matrix.OS }}
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        OS:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+
+    steps:
+      - name: 🌱 Checkout to the branch
+        uses: actions/checkout@v4
+
+      - name: 💣 Test
+        uses: ./
