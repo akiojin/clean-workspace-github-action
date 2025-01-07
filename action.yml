@@ -3,7 +3,7 @@ description: 'This action cleans the workspace.'
 
 runs:
   using: "composite"
-  post:
+  run:
     - name: Clean up workspace
       if: always()
       shell: bash

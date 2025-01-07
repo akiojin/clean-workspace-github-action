@@ -1,6 +1,6 @@
 # Copyright (c) 2022 Akio Jinsenji
 
-name: Build
+name: Build & Test
 
 on: push
 
@@ -23,6 +23,7 @@ jobs:
 
   Test:
     runs-on: ${{ matrix.OS }}
+    needs: Build
     timeout-minutes: 5
     strategy:
       matrix:
