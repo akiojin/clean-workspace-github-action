@@ -17,10 +17,6 @@
         "strict": true,
         "checks": [
             {
-                "context": "Build",
-                "app_id": 15368
-            },
-            {
                 "context": "Test (macos-latest)",
                 "app_id": 15368
             },
