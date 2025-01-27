@@ -11,5 +11,5 @@ runs:
         git reset --hard HEAD && git clean -fdx
 
 branding:
-  icon: "box"
-  color: "orange"
+  icon: 'box'
+  color: 'orange'
